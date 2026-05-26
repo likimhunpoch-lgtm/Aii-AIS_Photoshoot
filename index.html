@@ -22,6 +22,28 @@
   gap:14px;
 }
 
+.top-button-area{
+  margin-top:20px;
+}
+
+.top-link-btn{
+  display:inline-block;
+  padding:14px 28px;
+  border-radius:16px;
+  text-decoration:none;
+  color:white;
+  font-size:16px;
+  font-weight:600;
+  background:linear-gradient(135deg,#8b5cf6,#6366f1);
+  transition:0.3s;
+  box-shadow:0 12px 25px rgba(99,102,241,0.4);
+}
+
+.top-link-btn:hover{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 18px 35px rgba(99,102,241,0.6);
+}
+
 /* Camera Line Icon */
 .camera-line{
   width:55px;
@@ -243,6 +265,12 @@
       border-radius:18px;
       background:rgba(255,255,255,0.05);
       border:1px solid rgba(255,255,255,0.08);
+      transition:0.3s;
+    }
+
+    .section:hover{
+      transform:translateY(-3px);
+      background:rgba(255,255,255,0.07);
     }
 
     .section-title{
@@ -361,6 +389,11 @@
 
 </div>
       <p>Please complete all required information for media coverage.</p>
+      <div class="top-button-area">
+    <a href="sound.html" class="top-link-btn">
+      Sound System Form
+    </a>
+  </div>
     </div>
 
     <!-- Replace YOUR_GOOGLE_FORM_URL with your Google Form URL -->
@@ -501,7 +534,7 @@
 
           <div class="form-group">
             <label>Number of Attendees</label>
-            <input type="number" name="attendees" required>
+            <input type="number" name="attendees">
           </div>
 
           <div class="form-group full">
@@ -530,12 +563,12 @@
 
           <div class="form-group">
             <label>Morning Event Start Time</label>
-            <input type="time" name="morning_start" required>
+            <input type="time" name="morning_start">
           </div>
 
           <div class="form-group">
             <label>Morning Event End Time</label>
-            <input type="time" name="morning_end" required>
+            <input type="time" name="morning_end">
           </div>
 
           <div class="form-group">
@@ -606,7 +639,7 @@
       </button>
 <pre>
 
-  IT Technical Support @ MJQE
+  This form is only using in CAP Campus.
 
 </pre>
     </form>

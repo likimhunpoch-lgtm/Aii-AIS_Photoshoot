@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sound System Request Form</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    .speaker-wrapper{
+  position:fixed;
+  top:5%;
+  left:20%;
+  transform:translate(-50%, -50%);
+  z-index:1;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+    /* Speaker Animation */
+    .speaker{
+      width:60px;
+      height:60px;
+      background:#0ea5e9;
+      border-radius:50%;
+      position:relative;
+      box-shadow:0 0 25px #38bdf8;
+      animation:bounce 2s infinite;
+    }
+
+    .speaker::before,
+    .speaker::after{
+      content:'';
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      border:3px solid #38bdf8;
+      border-radius:50%;
+      animation:ring 2s infinite;
+    }
+
+    .speaker::before{
+      width:85px;
+      height:85px;
+    }
+
+    .speaker::after{
+      width:110px;
+      height:110px;
+      animation-delay:0.5s;
+    }
+
+     .speaker{
+        width:50px;
+        height:50px;
+      }
+
+    @keyframes ring{
+      0%{
+        opacity:1;
+        transform:translate(-50%,-50%) scale(0.7);
+      }
+      100%{
+        opacity:0;
+        transform:translate(-50%,-50%) scale(1.5);
+      }
+    }
+
+    @keyframes bounce{
+      0%,100%{
+        transform:translateY(0);
+      }
+      50%{
+        transform:translateY(-8px);
+      }
+    }
+
+    body{
+      min-height:100vh;
+      background:#0f172a;
+      overflow-x:hidden;
+      padding:40px 20px;
+      position:relative;
+      color:white;
+    }
+
+    /* Animated Sound Wave Background */
+    .wave{
+      position:absolute;
+      width:200%;
+      height:200px;
+      background:rgba(0,198,255,0.08);
+      border-radius:45%;
+      animation:waveMove 10s linear infinite;
+      z-index:0;
+    }
+
+    .wave1{
+      top:10%;
+      left:-50%;
+    }
+
+    .wave2{
+      top:50%;
+      left:-50%;
+      animation-duration:15s;
+      background:rgba(255,255,255,0.05);
+    }
+
+    .wave3{
+      top:80%;
+      left:-50%;
+      animation-duration:18s;
+      background:rgba(0,114,255,0.06);
+    }
+
+    @keyframes waveMove{
+      from{
+        transform:translateX(0) rotate(0deg);
+      }
+      to{
+        transform:translateX(25%) rotate(360deg);
+      }
+    }
+
+    .container{
+      position:relative;
+      z-index:2;
+      max-width:1200px;
+      margin:auto;
+      background:rgba(255,255,255,0.08);
+      backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius:25px;
+      padding:40px;
+      box-shadow:0 10px 40px rgba(0,0,0,0.4);
+    }
+
+    .header{
+      text-align:center;
+      margin-bottom:35px;
+    }
+
+    .header h1{
+      font-size:40px;
+      margin-bottom:10px;
+    }
+
+    .header p{
+      opacity:0.8;
+    }
+
+    .sound-icon{
+      font-size:60px;
+      display:inline-block;
+      animation:bounce 1.5s infinite;
+      margin-bottom:15px;
+    }
+
+    @keyframes bounce{
+      0%,100%{
+        transform:translateY(0);
+      }
+      50%{
+        transform:translateY(-12px);
+      }
+    }
+
+    form{
+      display:flex;
+      flex-direction:column;
+      gap:25px;
+    }
+
+    /* Section Style */
+    .section{
+      background:rgba(255,255,255,0.06);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:20px;
+      padding:25px;
+      transition:0.3s;
+    }
+
+    .section-title{
+      font-size:20px;
+      font-weight:600;
+      margin-bottom:20px;
+      color:#00c6ff;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+    }
+
+    .input-box{
+      display:flex;
+      flex-direction:column;
+    }
+
+    .input-box label{
+      margin-bottom:8px;
+      font-size:14px;
+      font-weight:500;
+    }
+
+    .input-box input,
+    .input-box select,
+    .input-box textarea{
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      outline:none;
+      background:rgba(255,255,255,0.1);
+      color:white;
+      border:1px solid rgba(255,255,255,0.1);
+      font-size:14px;
+    }
+
+    .input-box input::placeholder,
+    .input-box textarea::placeholder{
+      color:#ddd;
+    }
+
+    .input-box select option{
+      color:black;
+    }
+
+    textarea{
+      min-height:120px;
+      resize:none;
+    }
+
+    .full{
+      grid-column:1/-1;
+    }
+
+    .submit-area{
+      text-align:center;
+      margin-top:10px;
+    }
+
+    /* Animated Audio Background */
+    .audio-bg{
+      position:fixed;
+      bottom:0;
+      left:0;
+      width:100%;
+      height:160px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-end;
+      gap:8px;
+      z-index:0;
+      opacity:0.25;
+    }
+
+    .bar{
+      width:10px;
+      background:#38bdf8;
+      border-radius:20px;
+      animation:sound 1s infinite ease-in-out;
+    }
+
+    .bar:nth-child(1){height:40px;animation-delay:0s;}
+    .bar:nth-child(2){height:90px;animation-delay:0.2s;}
+    .bar:nth-child(3){height:60px;animation-delay:0.4s;}
+    .bar:nth-child(4){height:120px;animation-delay:0.1s;}
+    .bar:nth-child(5){height:70px;animation-delay:0.5s;}
+    .bar:nth-child(6){height:140px;animation-delay:0.3s;}
+    .bar:nth-child(7){height:90px;animation-delay:0.6s;}
+    .bar:nth-child(8){height:60px;animation-delay:0.2s;}
+    .bar:nth-child(9){height:110px;animation-delay:0.4s;}
+    .bar:nth-child(10){height:80px;animation-delay:0.7s;}
+
+    @keyframes sound{
+      0%,100%{
+        transform:scaleY(0.5);
+      }
+      50%{
+        transform:scaleY(1.5);
+      }
+    }
+
+@keyframes glow{
+      from{
+        text-shadow:0 0 10px #38bdf8;
+      }
+      to{
+        text-shadow:0 0 25px #0ea5e9;
+      }
+    }
+
+    .top-button-area{
+  margin-top:20px;
+}
+
+.top-link-btn{
+  display:inline-block;
+  padding:14px 28px;
+  border-radius:16px;
+  text-decoration:none;
+  color:white;
+  font-size:16px;
+  font-weight:600;
+  background:linear-gradient(135deg,#8b5cf6,#6366f1);
+  transition:0.3s;
+  box-shadow:0 12px 25px rgba(99,102,241,0.4);
+}
+
+.top-link-btn:hover{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 18px 35px rgba(99,102,241,0.6);
+}
+
+.section:hover{
+      transform:translateY(-3px);
+      background:rgba(255,255,255,0.07);
+    }
+
+    button{
+      padding:16px 50px;
+      border:none;
+      border-radius:50px;
+      background:linear-gradient(135deg,#00c6ff,#0072ff);
+      color:white;
+      font-size:16px;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
+      box-shadow:0 5px 20px rgba(0,114,255,0.4);
+    }
+
+    button:hover{
+      transform:translateY(-3px) scale(1.03);
+      box-shadow:0 5px 20px #4bc3f699;
+    }
+
+    #successMessage{
+      display:none;
+      text-align:center;
+      margin-top:20px;
+      color:#7CFC00;
+      font-weight:600;
+      font-size:16px;
+    }
+
+    @keyframes bgMove{
+      0%{background-position:0% 50%;}
+      50%{background-position:100% 50%;}
+      100%{background-position:0% 50%;}
+    }
+
+    @media(max-width:768px){
+
+      .container{
+        padding:25px;
+      }
+
+      .header h1{
+        font-size:28px;
+      }
+
+    }
+     @keyframes sound{
+      0%,100%{
+        transform:scaleY(0.5);
+      }
+      50%{
+        transform:scaleY(1.5);
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+
+   <!-- Animated Audio Bars -->
+  <div class="audio-bg">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
+
+  <!-- Animated Waves -->
+  <div class="wave wave1"></div>
+  <div class="wave wave2"></div>
+  <div class="wave wave3"></div>
+  <div class="container">
+    <div class="speaker-wrapper">
+  <div class="speaker">
+    <span></span>
+  </div>
+</div>
+    <div class="header">
+      <h1>Sound System Request Form</h1>
+      <p>Please complete all required information.</p>
+      <div class="top-button-area">
+    <a href="index.html" class="top-link-btn">
+      Photoshoot Form
+    </a>
+  </div>
+    </div>
+
+    <form id="soundForm">
+
+      <!-- PERSONAL INFORMATION -->
+      <div class="section">
+        <div class="section-title">Personal Information</div>
+
+        <div class="grid">
+
+          <div class="input-box">
+            <label>ID</label>
+            <input type="text" name="ID" required>
+          </div>
+
+          <div class="input-box">
+            <label>Name</label>
+            <input type="text" name="Name" required>
+          </div>
+
+          <div class="input-box">
+            <label>Position</label>
+            <input type="text" name="Position" required>
+          </div>
+
+          <div class="input-box">
+            <label>Phone</label>
+            <input type="text" name="Phone" required>
+          </div>
+
+          <div class="input-box">
+            <label>Email</label>
+            <input type="email" name="Email" required>
+          </div>
+
+          <div class="input-box">
+            <label>Department</label>
+            <select name="Department" required>
+              <option value="">Select Department</option>
+              <option>MJQ Education</option>
+              <option>ESL Program</option>
+              <option>CSL Program</option>
+              <option>AIS Academic</option>
+              <option>MJQ Library</option>
+              <option>Commercial</option>
+              <option>Human Resource</option>
+              <option>MJQ Foundation</option>
+              <option>General Production</option>
+              <option>Alex Food Court</option>
+              <option>Visual Art Center</option>
+              <option>Student Health Center</option>
+              <option>Administration</option>
+              <option>IAA (Sport)</option>
+              <option>MJQ Travel</option>
+              <option>OFCCEO</option>
+              <option>SOGO</option>
+              <option>SPSD</option>
+              <option>D & C</option>
+              <option>M & H</option>
+              <option>iTS</option>
+              <option>IB</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- EVENT INFORMATION -->
+      <div class="section">
+        <div class="section-title">Event Information</div>
+
+        <div class="grid">
+
+          <div class="input-box">
+            <label>Purpose</label>
+            <select name="Purpose" required>
+              <option value="">Select Purpose</option>
+              <option>Event</option>
+              <option>Archive Server</option>
+              <option>Facebook Post</option>
+              <option>Yearbook</option>
+              <option>Marketing Designing</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="input-box">
+            <label>Conference Room | Auditorium</label>
+            <select name="Auditorium" required>
+              <option value="">Select Conference Room | Auditorium</option>
+              <option>Sov Hong Kuy Auditorium, LKN Tower</option>
+              <option>Billy V. Chauv Conference Room, LKN Tower</option>
+              <option>Sov Sok Huong Conference Room, QLH Tower</option>
+              <option>Paul Quach Auditorium, AIS TK</option>
+              <option>Stephanie Ngoy Conference Room, AIS TK</option>
+              <option>Alex Quach Auditorium, Aii TK</option>
+              <option>Lyhong Ung Conference Room, PT</option>
+              <option>Melissa Quach Auditorium, AIS CCV</option>
+              <option>Eddie Quach Auditorium, Aii CCV</option>
+              <option>Sarika Quach Auditorium, AIS SR</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="input-box">
+            <label>Campus</label>
+            <select name="Campus" required>
+              <option value="">Select Campus</option>
+              <option>Lim Kim Noy Tower, American Intercon School, Mao Tse Tong</option>
+              <option>Quach Leng Hoa Tower, Aii Language Center, Mao Tse Tong</option>
+              <option>Mengly J. Quach Education Tower, Aii Language Center, Mao Tse Tong</option>
+              <option>Villa 4 Building, Aii Language Center, Mao Tse Tong</option>
+              <option>Ngin Huy Building, American Intercon School, Mao Tse Tong</option>
+              <option>Ngin Huy Corner, American Intercon School, Mao Tse Tong</option>
+              <option>Aii Language Center, Toul Kork</option>
+              <option>American Intercon School, Toul Kork</option>
+              <option>Aii Language Center, Chak Angre</option>
+              <option>American Intercon School, Chak Angre</option>
+              <option>Aii Language Center, Choam Chao</option>
+              <option>American Intercon School, Choam Chao</option>
+              <option>Aii Language Center, Phsar Thmey</option>
+              <option>American Intercon School, Phsar Thmey</option>
+              <option>Aii Language Center, Chroy Chongva</option>
+              <option>American Intercon School, Chroy Chongva</option>
+              <option>Aii Language Center, Siem Reap</option>
+              <option>American Intercon School, Siem Reap</option>
+              <option>Aii Language Center, Takeo</option>
+              <option>American Intercon School, Takeo</option>
+              <option>Aii Language Center, Sen Sok</option>
+              <option>American Intercon School, Sen Sok</option>
+              <option>Aii Language Center, Chbar Ampov</option>
+              <option>American Intercon School, Chbar Ampov</option>
+              <option>Aii Language Center, Chamkar Dong</option>
+              <option>American Intercon School, Chamkar Dong</option>
+              <option>Aii Language Center, Tuol Sangke</option>
+              <option>American Intercon School, Tuol Sangke</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="input-box">
+            <label>Venue</label>
+            <input type="text" name="Venue" required>
+          </div>
+
+          <div class="input-box">
+            <label>Number of Attendees</label>
+            <input type="number" name="Attendees">
+          </div>
+
+          <div class="input-box">
+            <label>Topic</label>
+            <input type="text" name="Topic" required>
+          </div>
+
+          <div class="input-box">
+            <label>Hosted By</label>
+            <input type="text" name="HostedBy" required>
+          </div>
+        </div>
+      </div>
+
+      <!-- EVENT TIME -->
+      <div class="section">
+        <div class="section-title">Event Time Schedule</div>
+
+        <div class="grid">
+
+           <div class="input-box">
+            <label>Event Start Date</label>
+            <input type="date" name="StartDate" required>
+          </div>
+
+          <div class="input-box">
+            <label>Event End Date</label>
+            <input type="date" name="EndDate" required>
+          </div>
+
+          <div class="input-box">
+            <label>Morning Event Start Time</label>
+            <input type="time" name="MorningStart">
+          </div>
+
+          <div class="input-box">
+            <label>Morning Event End Time</label>
+            <input type="time" name="MorningEnd">
+          </div>
+
+          <div class="input-box">
+            <label>Afternoon Event Start Time</label>
+            <input type="time" name="AfternoonStart">
+          </div>
+
+          <div class="input-box">
+            <label>Afternoon Event End Time</label>
+            <input type="time" name="AfternoonEnd">
+          </div>
+
+          <div class="input-box">
+            <label>Evening Event Start Time</label>
+            <input type="time" name="EveningStart">
+          </div>
+
+          <div class="input-box">
+            <label>Evening Event End Time</label>
+            <input type="time" name="EveningEnd">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SOUND CONTROL -->
+      <div class="section">
+        <div class="section-title">Sound Control</div>
+
+        <div class="grid">
+
+          <div class="input-box">
+            <label>Sound Controller</label>
+            <select name="SoundController" required>
+              <option value="">Select Sound Controller</option>
+              <option>Mr. Veasna Sok</option>
+              <option>Mr. Nuth Oek</option>
+              <option>Mr. Marady Soeun</option>
+              <option>Mr. Sokhan Thlang</option>
+              <option>Mr. Vannoy Non</option>
+              <option>Mr. Sathya Morn</option>
+              <option>Mr. Sokny Duong</option>
+              <option>Mr. At Sorn</option>
+              <option>Mr. Sokkhak Ut</option>
+              <option>Mr. Menghor Tong</option>
+              <option>Mr. Toeur Proeurm</option>
+              <option>Mr. Dara Tol</option>
+              <option>Mr. Sopheak Yong</option>
+              <option>Mr. Somnang Than</option>
+              <option>Mr. Vutha Tok</option>
+              <option>Mr. Phearun Dara</option>
+              <option>Mr. Likimhun Poch</option>
+              <option>Mr. Meng Mean</option>
+              <option>Mr. Piseth Un</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="input-box full">
+            <label>Additional Notes</label>
+            <textarea name="Notes" placeholder="Write additional notes here..."></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="submit-area">
+        <button type="submit">Submit Request</button>
+      </div>
+      
+      <pre>
+
+  This form is only using in CAP Campus.
+
+</pre>
+
+    </form>
+
+    <div id="successMessage">
+      ✅ Request submitted successfully!
+    </div>
+
+  </div>
+
+  <script>
+
+    // =========================================
+    // GOOGLE APPS SCRIPT WEB APP URL
+    // =========================================
+
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzwl3m4NUVMjrxqD4kKX6zO6jakMpHYm70YeCWiOt1I8-LLSI7-JU5grmBuLPYqm_nN/exec";
+
+    const form = document.getElementById("soundForm");
+    const successMessage = document.getElementById("successMessage");
+
+    form.addEventListener("submit", e => {
+
+      e.preventDefault();
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: new FormData(form)
+      })
+
+      .then(response => {
+
+        successMessage.style.display = "block";
+
+        form.reset();
+
+        setTimeout(() => {
+          successMessage.style.display = "none";
+        }, 4000);
+
+      })
+
+      .catch(error => {
+
+        alert("Error submitting form!");
+
+        console.error(error);
+
+      });
+
+    });
+
+  </script>
+
+</body>
+</html>
