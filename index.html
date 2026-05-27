@@ -14,6 +14,15 @@
       box-sizing:border-box;
       font-family:'Poppins',sans-serif;
     }
+    
+    #successMessage{
+      display:none;
+      text-align:center;
+      margin-top:20px;
+      color:#7CFC00;
+      font-weight:600;
+      font-size:16px;
+    }
 
     .title-flex{
   display:flex;
@@ -643,7 +652,9 @@
 
 </pre>
     </form>
-
+<div id="successMessage">
+      ✅ Request submitted successfully!
+    </div>
   </div>
 </div>
 
@@ -694,8 +705,11 @@ document
       const result = await response.json();
 
       if(result.result === "success"){
-        alert("Form submitted successfully!");
+       successMessage.style.display = "block";
         form.reset();
+         setTimeout(() => {
+          successMessage.style.display = "none";
+        }, 4000);
       }
 
     } catch(error){
