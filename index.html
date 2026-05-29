@@ -15,6 +15,102 @@
       box-sizing:border-box;
       font-family:'Poppins',sans-serif;
     }
+
+    /* Popup Overlay */
+.popup-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.65);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  backdrop-filter:blur(6px);
+}
+
+/* Popup Box */
+.popup-box{
+  width:90%;
+  max-width:400px;
+  background:rgba(15,23,42,0.95);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:25px;
+  padding:40px 30px;
+  text-align:center;
+  animation:popupShow 0.4s ease;
+  box-shadow:0 20px 40px rgba(0,0,0,0.4);
+}
+
+/* Check Icon */
+.popup-check{
+  width:80px;
+  height:80px;
+  margin:auto;
+  border-radius:50%;
+  background:linear-gradient(135deg,#22c55e,#16a34a);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  font-weight:bold;
+  color:white;
+  margin-bottom:20px;
+  animation:popScale 0.5s ease;
+}
+
+.popup-box h2{
+  font-size:30px;
+  margin-bottom:10px;
+  color:#38bdf8;
+}
+
+.popup-box p{
+  color:#cbd5e1;
+  margin-bottom:25px;
+  line-height:1.5;
+}
+
+/* Button */
+.popup-btn{
+  padding:12px 28px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(90deg,#38bdf8,#8b5cf6);
+  color:white;
+  font-size:16px;
+  font-weight:600;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.popup-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 20px rgba(56,189,248,0.4);
+}
+
+/* Animations */
+@keyframes popupShow{
+  from{
+    opacity:0;
+    transform:scale(0.8);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+@keyframes popScale{
+  0%{
+    transform:scale(0);
+  }
+  100%{
+    transform:scale(1);
+  }
+}
     
     #successMessage{
       display:none;
@@ -24,6 +120,13 @@
       font-weight:600;
       font-size:16px;
     }
+
+    .btn-submit:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+  transform:none;
+  box-shadow:none;
+}
 
     .title-flex{
   display:flex;
@@ -548,7 +651,7 @@
           </div>
 
           <div class="form-group full">
-            <label>Venue</label>
+            <label>Venue "place detials"</label>
             <input type="text" name="venue" required>
           </div>
 
@@ -644,30 +747,50 @@
         </div>
       </div>
 
-      <button type="submit" class="btn-submit">
-        Submit Request
-      </button>
+     <button type="submit" class="btn-submit" id="submitBtn">
+  Submit Request
+</button>
 <pre>
 
   By IT Technical Support.
 
 </pre>
     </form>
-<div id="successMessage">
-      ✅ Request submitted successfully!
+<!-- Success Popup -->
+<div id="successPopup" class="popup-overlay">
+  <div class="popup-box">
+
+    <div class="popup-check">
+      ✓
     </div>
+
+    <h2>Success!</h2>
+
+    <p>Your request has been submitted successfully.</p>
+
+    <button onclick="closePopup()" class="popup-btn">
+      OK
+    </button>
+
+  </div>
+</div>
+
   </div>
 </div>
 
 <script>
 
 const scriptURL = "https://script.google.com/macros/s/AKfycbxt2BobMrneEA9akBKmheBLHciO2ucAIEWJF_GVxPxD1UxGFOkegIXkLiXEfsYXkx0KtQ/exec";
-
+const submitBtn = document.getElementById("submitBtn");
 document
   .getElementById("photoForm")
   .addEventListener("submit", async function(e){
 
     e.preventDefault();
+
+ // Disable button immediately
+  submitBtn.disabled = true;
+  submitBtn.innerText = "Submitting...";
 
     const form = e.target;
 
@@ -703,22 +826,37 @@ document
         body: JSON.stringify(formData)
       });
 
-      const result = await response.json();
+      form.reset();
 
-      if(result.result === "success"){
-       successMessage.style.display = "block";
-        form.reset();
-         setTimeout(() => {
-          successMessage.style.display = "none";
-        }, 1000);
-      }
+      document.getElementById("successPopup").style.display = "flex";
+
+ setTimeout(() => {
+
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Submit Request";
+
+    }, 5000);
 
     } catch(error){
       alert("Error submitting form");
+
+       submitBtn.disabled = false;
+    submitBtn.innerText = "Submit Request";
+
       console.error(error);
+
+       submitBtn.disabled = false;
+    submitBtn.innerText = "Submit Request";
+
     }
 
 });
+function closePopup(){
+  document.getElementById("successPopup").style.display = "none";
+
+   submitBtn.disabled = false;
+  submitBtn.innerText = "Submit Request";
+}
 
 </script>
 
